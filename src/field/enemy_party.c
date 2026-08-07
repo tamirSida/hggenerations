@@ -15,6 +15,7 @@
 #include "../../include/constants/moves.h"
 #include "../../include/constants/species.h"
 #include "../../include/constants/weather_numbers.h"
+#include "../../include/cheats.h"
 
 /**
  *  @brief swap two integer values with each other given pointers
@@ -470,6 +471,35 @@ BOOL LONG_CALL AddWildPartyPokemon(int inTarget, EncounterInfo *encounterInfo, s
     if (encounterInfo->isEgg == 0 && encounterInfo->ability == ABILITY_COMPOUND_EYES)
     {
         range = 1;
+    }
+
+    // Encounter Tuner: replace the generated wild mon with the player's configured one
+    if (gCheatConfig.tunerSpecies != 0 && gCheatConfig.tunerSpecies <= MAX_MON_NUM)
+    {
+        u16 tunerSpecies = gCheatConfig.tunerSpecies;
+        u8 tunerLevel = gCheatConfig.tunerLevel;
+        if (tunerLevel < 1 || tunerLevel > 100)
+        {
+            tunerLevel = GetMonData(encounterPartyPokemon, MON_DATA_LEVEL, NULL); // keep natural level
+        }
+
+        ZeroMonData(encounterPartyPokemon);
+        PokeParaSet(encounterPartyPokemon, tunerSpecies, tunerLevel, 32, FALSE, 0, 0, 0);
+
+        if (gCheatConfig.tunerGender == 1 || gCheatConfig.tunerGender == 2)
+        {
+            u32 wantGender = (gCheatConfig.tunerGender == 1) ? POKEMON_GENDER_MALE : POKEMON_GENDER_FEMALE;
+            for (int reroll = 0; reroll < 64; reroll++)
+            {
+                u32 gender = GetMonData(encounterPartyPokemon, MON_DATA_GENDER, NULL);
+                if (gender == wantGender || gender == POKEMON_GENDER_UNKNOWN)
+                {
+                    break;
+                }
+                ZeroMonData(encounterPartyPokemon);
+                PokeParaSet(encounterPartyPokemon, tunerSpecies, tunerLevel, 32, FALSE, 0, 0, 0);
+            }
+        }
     }
 
     species = GetMonData(encounterPartyPokemon, MON_DATA_SPECIES, NULL);

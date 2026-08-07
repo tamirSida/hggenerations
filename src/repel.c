@@ -2,6 +2,7 @@
 #include "../include/item.h"
 #include "../include/constants/item.h"
 #include "../include/bag.h"
+#include "../include/cheats.h"
 #include "../include/constants/file.h"
 
 
@@ -13,6 +14,10 @@ u16 ALIGN4 CurrentRepelType = 0;
 bool32 PlayerStepEvent_RepelCounterDecrement(SaveData *saveData, FieldSystem *fieldSystem) {
     void *roamerSaveData = EncDataSave_GetSaveDataPtr(saveData);
     u8* repel_addr = SaveData_GetRepelPtr(roamerSaveData);
+
+    if (gCheatConfig.infRepel && *repel_addr != 0) {
+        return FALSE; // cheat: an active repel never runs out
+    }
 
     if (*repel_addr != 0) {
         (*repel_addr)--;

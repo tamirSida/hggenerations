@@ -6746,6 +6746,11 @@ FORM_ROCKET_DISGUISE                    equ 1024
 
 // 208 has been reused for new script commands
 .equ NEW_COMMAND_QUEUE_NEW_REPEL, 0
+.equ NEW_COMMAND_TUNER_PREP, 1
+.equ NEW_COMMAND_TUNER_PARSE_SPECIES, 2
+.equ NEW_COMMAND_TUNER_PARSE_LEVEL, 3
+.equ NEW_COMMAND_TUNER_PARSE_GENDER, 4
+.equ NEW_COMMAND_TUNER_COMMIT, 5
 
 .macro RunNewCommand,slot,unk
 DummyTextTrap slot, unk
@@ -6753,6 +6758,26 @@ DummyTextTrap slot, unk
 
 .macro QueueNewRepel
 RunNewCommand NEW_COMMAND_QUEUE_NEW_REPEL, 0x800C
+.endmacro
+
+.macro TunerPrep,var
+RunNewCommand NEW_COMMAND_TUNER_PREP, var
+.endmacro
+
+.macro TunerParseSpecies,var
+RunNewCommand NEW_COMMAND_TUNER_PARSE_SPECIES, var
+.endmacro
+
+.macro TunerParseLevel,var
+RunNewCommand NEW_COMMAND_TUNER_PARSE_LEVEL, var
+.endmacro
+
+.macro TunerParseGender,var
+RunNewCommand NEW_COMMAND_TUNER_PARSE_GENDER, var
+.endmacro
+
+.macro TunerCommit
+RunNewCommand NEW_COMMAND_TUNER_COMMIT, 0x800C
 .endmacro
 
 // Dummy

@@ -1,3 +1,4 @@
+#include "../../include/cheats.h"
 #include "../../include/types.h"
 #include "../../include/battle.h"
 #include "../../include/config.h"
@@ -1467,6 +1468,12 @@ void Task_DistributeExp_Extend(void *arg0, void *work)
                 }
                 sp->exp_share_obtained_exp = 0;
             }
+
+            if (gCheatConfig.expMult > 1)
+            {
+                sp->obtained_exp *= gCheatConfig.expMult;
+                sp->exp_share_obtained_exp *= gCheatConfig.expMult;
+            }
         }
     }
 
@@ -1535,6 +1542,12 @@ void Task_DistributeExp_Extend(void *arg0, void *work)
                 sp->obtained_exp = 1;
             }
             sp->exp_share_obtained_exp = 0;
+        }
+
+        if (gCheatConfig.expMult > 1)
+        {
+            sp->obtained_exp *= gCheatConfig.expMult;
+            sp->exp_share_obtained_exp *= gCheatConfig.expMult;
         }
     }
 

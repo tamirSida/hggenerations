@@ -118,3 +118,8 @@ NOT TELLING
 
 The repellent’s effect wore off!\nWould you like to use another one?
 You used the {STRVAR_1 8, 1, 0}.
+TUNER: Type the POKéDEX number on\nthe keyboard. (Nothing = Tuner OFF)
+Now type the LEVEL.\n(Nothing = natural levels)
+Now type the GENDER.\n(0 = any, 1 = male, 2 = female)
+The Encounter Tuner is now active!
+The Encounter Tuner is now OFF.

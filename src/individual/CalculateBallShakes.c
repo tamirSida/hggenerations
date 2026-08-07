@@ -1,3 +1,4 @@
+#include "../../include/cheats.h"
 #include "../../include/types.h"
 #include "../../include/battle.h"
 #include "../../include/config.h"
@@ -57,6 +58,11 @@ u32 __attribute__((section (".init"))) CalculateBallShakesInternal(void *bw, str
     BOOL isCriticalCatch = FALSE;
 
     if (BattleTypeGet(bw) & (BATTLE_TYPE_PAL_PARK | BATTLE_TYPE_CATCHING_DEMO)) // poke park and safari zone always succeed
+    {
+        return 4;
+    }
+
+    if (gCheatConfig.catch100) // cheat: every ball always catches
     {
         return 4;
     }

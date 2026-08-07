@@ -337,6 +337,7 @@ void ClearOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req)
     req->DebugKeyPush = 0;
 
     req->OpenPCCheck  = 0; // new:  check if pc should be opened
+    req->OpenTunerCheck = 0; // new:  check if encounter tuner should be opened
 
     req->Site = 0xFF;
     req->PushSite = 0xFF;
@@ -350,8 +351,17 @@ void ClearOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req)
  */
 void SetOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req, u16 trg)
 {
+    // B held = ignore L/R app shortcuts, so the walk-through-walls AR toggles
+    // (R+B on, L+B off) don't also pop the PC or the Encounter Tuner
+    if (PAD_Read() & PAD_BUTTON_B) {
+        return;
+    }
+
     if (trg & PAD_BUTTON_L) {
         req->OpenPCCheck = TRUE;
+    }
+    if (trg & PAD_BUTTON_R) {
+        req->OpenTunerCheck = TRUE;
     }
 }
 
@@ -365,5 +375,7 @@ void CheckOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req, FieldSystem *fsys)
     if (req->OpenPCCheck) {
         SetScriptFlag(0x18F); // some random flag that should be set by script 2010 (file 3 script 10)
         EventSet_Script(fsys, 2010, NULL); // set up script 2010
+    } else if (req->OpenTunerCheck) {
+        EventSet_Script(fsys, 2073, NULL); // encounter tuner input flow (file 3 script 73)
     }
 }

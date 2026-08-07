@@ -94,3 +94,5 @@ changelog
 
 # local rom dumps
 roms/
+*.xdelta
+build*.log

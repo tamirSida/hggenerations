@@ -87,6 +87,7 @@ scrdef scr_seq_0003_069
 scrdef scr_seq_0003_070
 scrdef scr_seq_0003_071
 scrdef scr_seq_0003_072_repels
+scrdef scr_seq_0003_073_tuner
 scrdef_end
 
 scr_seq_0003_002:
@@ -1739,7 +1740,61 @@ scr_seq_0003_064:
     end
 
 
+// Encounter Tuner (opened with R in the overworld): type dex number, level and
+// gender on the vanilla naming-screen keyboard; values land in gCheatConfig
+scr_seq_0003_073_tuner:
+    play_se SEQ_SE_DP_SELECT
+    lockall
+    TunerPrep VAR_SPECIAL_x8005
+    compare VAR_SPECIAL_x8005, 0xFF
+    goto_if_eq _tunerAbort
+    npc_msg 120
+    wait_button
+    closemsg
+    fade_screen 6, 1, 0, RGB_BLACK
+    wait_fade
+    nickname_input VAR_SPECIAL_x8005, VAR_SPECIAL_RESULT
+    fade_screen 6, 1, 1, RGB_BLACK
+    wait_fade
+    TunerParseSpecies VAR_SPECIAL_x8000
+    compare VAR_SPECIAL_x8000, 0
+    goto_if_eq _tunerOff
+    npc_msg 121
+    wait_button
+    closemsg
+    fade_screen 6, 1, 0, RGB_BLACK
+    wait_fade
+    nickname_input VAR_SPECIAL_x8005, VAR_SPECIAL_RESULT
+    fade_screen 6, 1, 1, RGB_BLACK
+    wait_fade
+    TunerParseLevel VAR_SPECIAL_x8001
+    npc_msg 122
+    wait_button
+    closemsg
+    fade_screen 6, 1, 0, RGB_BLACK
+    wait_fade
+    nickname_input VAR_SPECIAL_x8005, VAR_SPECIAL_RESULT
+    fade_screen 6, 1, 1, RGB_BLACK
+    wait_fade
+    TunerParseGender VAR_SPECIAL_x8002
+    TunerCommit
+    npc_msg 123
+    wait_button
+    closemsg
+    releaseall
+    end
 
+_tunerOff:
+    TunerCommit
+    npc_msg 124
+    wait_button
+    closemsg
+    releaseall
+    end
+
+_tunerAbort:
+    releaseall
+    end
 
 
 .close
