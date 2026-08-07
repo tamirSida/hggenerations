@@ -91,3 +91,6 @@ tools/swav2swar.exe
 *.gbapal
 *.4bpp
 changelog
+
+# local rom dumps
+roms/
