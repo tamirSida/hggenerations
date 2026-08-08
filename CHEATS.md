@@ -8,8 +8,11 @@ SHA-256 `a83d983e...d83442`). The addresses below are baked into this specific b
 Press **R** anywhere in the overworld to open the Encounter Tuner. It uses the
 game's touch keyboard to ask you, in order:
 
-1. **Pokédex number** — type it (e.g. `448` for Lucario) and confirm.
-   Confirm an *empty* entry to switch the Tuner **off**.
+1. **Species number** — type it and confirm. Confirm an *empty* entry to
+   switch the Tuner **off**. Numbering: Gen 1-4 species (dex 1-493) use their
+   National Dex number as-is (`448` = Lucario); from Gen 5 onward add **+50**
+   (the engine reserves IDs 494-543): Victini = `544`, Greninja = `708`,
+   Zacian = `938`, Pecharunt = `1075`.
 2. **Level** — `1`–`100`, or empty to keep the area's natural levels.
 3. **Gender** — `0` = random, `1` = male, `2` = female.
 
