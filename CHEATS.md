@@ -1,7 +1,8 @@
-# HeartGold Generations v3.1 — Cheat Guide (Delta / melonDS)
+# HeartGold Generations v3.2 — Cheat Guide (Delta / melonDS)
 
-These cheats work **only with the v3.1 ROM** (`HeartGold-Generations-v3.1-cheats.nds`,
-SHA-256 `a83d983e...d83442`). The addresses below are baked into this specific build.
+These cheats work with the v3.1/v3.2 ROMs (current: `HeartGold-Generations-v3.2-cheats.nds`,
+SHA-256 `0097779a...e2e4a1`). The addresses are identical in both builds; the
+Flee Trainer Battles cheat needs v3.2.
 
 ## The Encounter Tuner (built into the game — no cheat code needed)
 
@@ -53,11 +54,16 @@ so a multiplier gets you *to* the cap fast but never past it.
 | 100% Catch Rate | `223DDE4D 00000001` | any ball always catches (all 4 shakes) |
 | Always Run (wild) | `223DDE4E 00000001` | running from wild battles always works — traps, Mean Look, Arena Trap, speed all bypassed |
 
-**About trainer battles:** Gen 4's engine hard-blocks fleeing trainer battles in
-code this hack doesn't touch, and force-fleeing one would leave the trainer's
-script in a broken state (white-out risk). To *avoid* trainer battles, use
-Walk Through Walls below and route around their line of sight — combined with
-the Encounter Tuner there's no need to grind through them.
+| Flee Trainer Battles (v3.2+) | `223DDE54 00000001` | while enabled, **hold L+R** during a trainer battle to end it instantly as "fled" |
+
+**How Flee Trainer Battles works:** the Run menu option stays blocked (that
+refusal lives deep in vanilla UI code), so instead the cheat watches for L+R
+and marks the battle outcome as "player fled" — the same early-exit path a
+successful wild flee or a ball capture uses. The trainer is *not* marked
+defeated, so walking back into their line of sight starts the fight again.
+Tested paths through the battle-end sequence are the engine's own; still, this
+is the most experimental cheat here — save before relying on it, and if you
+ever see odd behavior right after fleeing, report it.
 
 ### Overworld
 
@@ -84,7 +90,7 @@ before saving.
 
 | Name | Code | Effect |
 |---|---|---|
-| All Native Cheats OFF | `023DDE4C 00000000` | zeroes XP/catch/run/repel cheats at once |
+| All Native Cheats OFF | `023DDE4C 00000000` + `223DDE54 00000000` (one code, two lines) | zeroes XP/catch/run/repel/flee-trainer at once |
 
 ### Event unlocks
 

@@ -20,6 +20,7 @@ typedef struct CheatConfig
     u16 tunerSpecies;  // Encounter Tuner: species/dex number to force; 0 = tuner off
     u8 tunerLevel;     // Encounter Tuner: level 1-100; 0 = keep natural level
     u8 tunerGender;    // Encounter Tuner: 0 = random, 1 = male, 2 = female
+    u8 fleeTrainer;    // nonzero = holding L+R in a trainer battle ends it as "fled"
 } CheatConfig;
 
 #define CHEAT_MAGIC 0x33564748  // 'HGV3'

@@ -16,4 +16,5 @@ CheatConfig ALIGN4 gCheatConfig =
     .tunerSpecies = 0,
     .tunerLevel = 0,
     .tunerGender = 0,
+    .fleeTrainer = 0,
 };
