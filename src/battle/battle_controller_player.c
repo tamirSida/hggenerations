@@ -2,36 +2,40 @@
 #include "../../include/battle_controller_player.h"
 #include "../../include/cheats.h"
 #include "../../include/constants/battle_message_constants.h"
-
-#define BATTLE_RESULT_PLAYER_FLED 5    // WIN|CAPTURED bit pattern the engine uses for "player ran"
-#define BATTLE_RESULT_TRY_FLEE_WAIT 0x40
+#include "../../include/constants/battle_script_constants.h"
+#include "../../include/constants/file.h"
 
 /**
- *  @brief cheat: while gCheatConfig.fleeTrainer is set, holding L+R during a
- *         trainer battle marks the battle outcome as "player fled", which the
- *         state machine below routes into the normal battle-end sequence --
- *         the same early-exit path a successful wild flee uses.
+ *  @brief cheat: while gCheatConfig.fleeTrainer is set, holding L+R when a
+ *         trainer-battle turn starts runs the genuine escape sub-sequence
+ *         (SUB_SEQ_ESCAPE) -- the exact script a successful wild flee runs,
+ *         from the same quiescent state (every selection menu already closed).
+ *         The vanilla block only exists in the selection UI, which this
+ *         bypasses entirely.
  */
-static void overrideTrainerEscape(struct BattleSystem *bsys)
+static void overrideTrainerEscape(struct BattleSystem *bsys, struct BattleStruct *ctx)
 {
-    u16 held;
     u32 fight_type;
 
     if (!gCheatConfig.fleeTrainer)
         return;
 
-    held = PAD_Read();
-    if ((held & (PAD_BUTTON_L | PAD_BUTTON_R)) != (PAD_BUTTON_L | PAD_BUTTON_R))
+    if (ctx->server_seq_no != CONTROLLER_COMMAND_CALC_EXECUTION_ORDER)
+        return;
+
+    if ((PAD_Read() & (PAD_BUTTON_L | PAD_BUTTON_R)) != (PAD_BUTTON_L | PAD_BUTTON_R))
         return;
 
     fight_type = BattleTypeGet(bsys);
     if (!(fight_type & BATTLE_TYPE_TRAINER) || (fight_type & BATTLE_TYPE_WIRELESS))
         return;
 
-    if (BattleSystem_GetBattleOutcomeFlags(bsys) == 0)
-    {
-        BattleSystem_SetBattleOutcomeFlags(bsys, BATTLE_RESULT_PLAYER_FLED);
-    }
+    if (BattleSystem_GetBattleOutcomeFlags(bsys))
+        return;
+
+    LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_ESCAPE);
+    ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;
+    ctx->next_server_seq_no = CONTROLLER_COMMAND_44;
 }
 
 #if defined (DISABLE_ITEMS_IN_TRAINER_BATTLE)
@@ -60,7 +64,7 @@ void overrideItemUsage(struct BattleSystem *bsys, struct BattleStruct *ctx)
 
 BOOL LONG_CALL BattleContext_Main(struct BattleSystem *bsys, struct BattleStruct *ctx)
 {
-    overrideTrainerEscape(bsys);
+    overrideTrainerEscape(bsys, ctx);
 
     if (!ctx->fight_end_flag)
     {

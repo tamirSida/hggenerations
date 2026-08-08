@@ -21,6 +21,8 @@ typedef struct CheatConfig
     u8 tunerLevel;     // Encounter Tuner: level 1-100; 0 = keep natural level
     u8 tunerGender;    // Encounter Tuner: 0 = random, 1 = male, 2 = female
     u8 fleeTrainer;    // nonzero = holding L+R in a trainer battle ends it as "fled"
+    u8 shinyWild;      // nonzero = every wild encounter is shiny (works with the tuner)
+    u8 uncapLevel;     // nonzero = ignore the hack's progressive level cap (cap becomes 100)
 } CheatConfig;
 
 #define CHEAT_MAGIC 0x33564748  // 'HGV3'

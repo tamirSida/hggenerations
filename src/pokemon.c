@@ -1,6 +1,7 @@
 #include "../include/types.h"
 #include "../include/bag.h"
 #include "../include/battle.h"
+#include "../include/cheats.h"
 #include "../include/config.h"
 #include "../include/debug.h"
 #include "../include/overlay.h"
@@ -2053,6 +2054,8 @@ u32 SpeciesAndFormeToWazaOshieIndex(u32 species, u32 form)
 u32 LONG_CALL GetLevelCap(void)
 {
 #ifdef IMPLEMENT_LEVEL_CAP
+    if (gCheatConfig.uncapLevel) // cheat: ignore the hack's progressive level cap
+        return 100;
     u32 levelCap = GetScriptVar(LEVEL_CAP_VARIABLE);
     if (levelCap > 100 || levelCap == 0) levelCap = 100;
     return levelCap;

@@ -453,6 +453,24 @@ void MakeTrainerPokemonParty(struct BATTLE_PARAM *bp, int num, int heapID)
 extern u32 space_for_setmondata;
 
 /**
+ *  @brief cheat helper: rewrite the mon's PID so it is shiny for its OT id,
+ *         preserving substructure order; recalculates dependent data
+ */
+static void CheatMakeMonShiny(struct PartyPokemon *mon)
+{
+    u32 otid = GetMonData(mon, MON_DATA_OTID, NULL);
+    u32 pid = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
+
+    if (!CalcShininessByOtIdAndPersonality(otid, pid))
+    {
+        pid = GenerateShinyPIDKeepSubstructuresIntact(otid, pid);
+        SetMonData(mon, MON_DATA_PERSONALITY, (u8 *)&pid);
+        RecalcPartyPokemonStats(mon);
+        ResetPartyPokemonAbility(mon);
+    }
+}
+
+/**
  *  @brief add a PartyPokemon to the "wild battler"'s party
  *
  *  @param inTarget battler whose party to add to
@@ -477,29 +495,42 @@ BOOL LONG_CALL AddWildPartyPokemon(int inTarget, EncounterInfo *encounterInfo, s
     if (gCheatConfig.tunerSpecies != 0 && gCheatConfig.tunerSpecies <= MAX_MON_NUM)
     {
         u16 tunerSpecies = gCheatConfig.tunerSpecies;
+        u32 origOtId = GetMonData(encounterPartyPokemon, MON_DATA_OTID, NULL); // keep the wild mon's proper OT id
+        u32 wantGender = POKEMON_GENDER_UNKNOWN;
         u8 tunerLevel = gCheatConfig.tunerLevel;
         if (tunerLevel < 1 || tunerLevel > 100)
         {
             tunerLevel = GetMonData(encounterPartyPokemon, MON_DATA_LEVEL, NULL); // keep natural level
         }
-
-        ZeroMonData(encounterPartyPokemon);
-        PokeParaSet(encounterPartyPokemon, tunerSpecies, tunerLevel, 32, FALSE, 0, 0, 0);
-
         if (gCheatConfig.tunerGender == 1 || gCheatConfig.tunerGender == 2)
         {
-            u32 wantGender = (gCheatConfig.tunerGender == 1) ? POKEMON_GENDER_MALE : POKEMON_GENDER_FEMALE;
-            for (int reroll = 0; reroll < 64; reroll++)
+            wantGender = (gCheatConfig.tunerGender == 1) ? POKEMON_GENDER_MALE : POKEMON_GENDER_FEMALE;
+        }
+
+        for (int reroll = 0; reroll < 64; reroll++)
+        {
+            ZeroMonData(encounterPartyPokemon);
+            PokeParaSet(encounterPartyPokemon, tunerSpecies, tunerLevel, 32, FALSE, 0, ID_SET, origOtId);
+            if (gCheatConfig.shinyWild)
             {
-                u32 gender = GetMonData(encounterPartyPokemon, MON_DATA_GENDER, NULL);
-                if (gender == wantGender || gender == POKEMON_GENDER_UNKNOWN)
-                {
-                    break;
-                }
-                ZeroMonData(encounterPartyPokemon);
-                PokeParaSet(encounterPartyPokemon, tunerSpecies, tunerLevel, 32, FALSE, 0, 0, 0);
+                CheatMakeMonShiny(encounterPartyPokemon); // before the gender check: shinifying can flip gender
+            }
+            if (wantGender == POKEMON_GENDER_UNKNOWN)
+            {
+                break;
+            }
+            u32 gender = GetMonData(encounterPartyPokemon, MON_DATA_GENDER, NULL);
+            if (gender == wantGender || gender == POKEMON_GENDER_UNKNOWN)
+            {
+                break;
             }
         }
+    }
+
+    // shiny cheat for untouched encounters (no-op if the tuner already made it shiny)
+    if (gCheatConfig.shinyWild)
+    {
+        CheatMakeMonShiny(encounterPartyPokemon);
     }
 
     species = GetMonData(encounterPartyPokemon, MON_DATA_SPECIES, NULL);

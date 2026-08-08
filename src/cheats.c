@@ -3,10 +3,11 @@
 
 /**
  *  Cheat configuration block -- see include/cheats.h.
- *  Placed in .data of the always-resident arm9 extension so it has a stable
- *  RAM address (emitted into rom_gen.ld as gCheatConfig on every build).
+ *  Pinned into the dedicated .cheatcfg section, which src/linker.ld places
+ *  first in the always-resident arm9 extension: gCheatConfig sits at exactly
+ *  0x023D8600 in every build, so Action Replay codes never go stale.
  */
-CheatConfig ALIGN4 gCheatConfig =
+CheatConfig __attribute__((section(".cheatcfg"))) ALIGN4 gCheatConfig =
 {
     .magic = CHEAT_MAGIC,
     .expMult = 0,
@@ -17,4 +18,6 @@ CheatConfig ALIGN4 gCheatConfig =
     .tunerLevel = 0,
     .tunerGender = 0,
     .fleeTrainer = 0,
+    .shinyWild = 0,
+    .uncapLevel = 0,
 };

@@ -12,6 +12,7 @@ SECTIONS {
                 FILL (0xABCD)
 
                 __text_start = . ;
+                *(.cheatcfg)  /* pinned first: gCheatConfig stays at 0x023D8600 across all builds */
                 *(.init)
                 *(.text)
                 *(.ctors)

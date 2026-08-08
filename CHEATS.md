@@ -1,13 +1,17 @@
-# HeartGold Generations v3.2 — Cheat Guide (Delta / melonDS)
+# HeartGold Generations v3.3 — Cheat Guide (Delta / melonDS)
 
-These cheats work with the v3.1/v3.2 ROMs (current: `HeartGold-Generations-v3.2-cheats.nds`,
-SHA-256 `0097779a...e2e4a1`). The addresses are identical in both builds; the
-Flee Trainer Battles cheat needs v3.2.
+Current build: `HeartGold-Generations-v3.3-cheats.nds`,
+SHA-256 `214491b0...f96399`.
+
+> **v3.3 changed every cheat address — once.** The cheat block is now pinned to
+> a dedicated spot at the start of the engine's code region (`0x023D8600`), so
+> these codes stay valid in every future build. Codes from the v3.1/v3.2 guides
+> no longer work; re-enter the ones below.
 
 ## The Encounter Tuner (built into the game — no cheat code needed)
 
-Press **R** anywhere in the overworld to open the Encounter Tuner. It uses the
-game's touch keyboard to ask you, in order:
+Press **R** anywhere in the overworld. It uses the game's touch keyboard to
+ask, in order:
 
 1. **Species number** — type it and confirm. Confirm an *empty* entry to
    switch the Tuner **off**. Numbering: Gen 1-4 species (dex 1-493) use their
@@ -17,62 +21,59 @@ game's touch keyboard to ask you, in order:
 2. **Level** — `1`–`100`, or empty to keep the area's natural levels.
 3. **Gender** — `0` = random, `1` = male, `2` = female.
 
-While active, **every wild encounter** (grass, surf, fishing, caves) becomes the
-Pokémon you configured. Held items, shiny odds and IVs roll normally. Turn it
-off by opening it again and confirming an empty Pokédex number.
+While active, every wild encounter (grass, surf, fishing, caves) becomes the
+configured Pokémon. Press **L** for the Portable PC, as in v2.0. While holding
+**B**, the L/R shortcuts are ignored (keeps them clear of the
+walk-through-walls toggle).
 
-(Press **L** for the Portable PC, as in v2.0. While holding **B**, the L/R
-shortcuts are ignored — that keeps them out of the walk-through-walls toggle.)
+## Adding codes in Delta
 
-## Delta cheat codes
+Pause → **Cheat Codes** → **+** → **Action Replay** → paste name + code.
+Tick to enable, untick to disable.
 
-In Delta: pause the game → **Cheat Codes** → **+** → choose **Action Replay**,
-paste the name and code. Tick to enable, untick to disable.
+> **Important:** these cheats write a setting into game memory. Unticking stops
+> *refreshing* the setting, but the last value stays until you briefly enable
+> **All Native Cheats OFF** or restart the game. The walk-through-walls code is
+> the exception (its L+B combo restores vanilla behavior directly).
 
-> **Important:** the native cheats below write a setting into the game's memory.
-> Unticking the code stops *refreshing* the setting but the last value stays
-> until you either enable **All Native Cheats OFF** for a moment or restart the
-> game. Codes marked *(vanilla)* act instantly on tick/untick.
-
-### XP multipliers (enable at most one)
+## XP (enable at most one multiplier)
 
 | Name | Code |
 |---|---|
-| XP ×4   | `223DDE4C 00000004` |
-| XP ×16  | `223DDE4C 00000010` |
-| XP ×32  | `223DDE4C 00000020` |
-| XP ×64  | `223DDE4C 00000040` |
-| XP ×128 | `223DDE4C 00000080` |
+| XP ×4   | `223D8604 00000004` |
+| XP ×16  | `223D8604 00000010` |
+| XP ×32  | `223D8604 00000020` |
+| XP ×64  | `223D8604 00000040` |
+| XP ×128 | `223D8604 00000080` |
+| Ignore Level Cap (v3.3+) | `223D860E 00000001` |
 
-Note: the hack's **level cap** still applies — extra XP is clamped at the cap,
-so a multiplier gets you *to* the cap fast but never past it.
+The hack raises its level cap per badge and **discards** any experience above
+the current cap — that is why multipliers alone seem to "stop working" as a
+mon approaches the cap. Enable **Ignore Level Cap** to lift the ceiling to 100
+(also unblocks Rare Candies at the cap).
 
-### Catching & battles
-
-| Name | Code | Effect |
-|---|---|---|
-| 100% Catch Rate | `223DDE4D 00000001` | any ball always catches (all 4 shakes) |
-| Always Run (wild) | `223DDE4E 00000001` | running from wild battles always works — traps, Mean Look, Arena Trap, speed all bypassed |
-
-| Flee Trainer Battles (v3.2+) | `223DDE54 00000001` | while enabled, **hold L+R** during a trainer battle to end it instantly as "fled" |
-
-**How Flee Trainer Battles works:** the Run menu option stays blocked (that
-refusal lives deep in vanilla UI code), so instead the cheat watches for L+R
-and marks the battle outcome as "player fled" — the same early-exit path a
-successful wild flee or a ball capture uses. The trainer is *not* marked
-defeated, so walking back into their line of sight starts the fight again.
-Tested paths through the battle-end sequence are the engine's own; still, this
-is the most experimental cheat here — save before relying on it, and if you
-ever see odd behavior right after fleeing, report it.
-
-### Overworld
+## Catching & battles
 
 | Name | Code | Effect |
 |---|---|---|
-| Infinite Repel | `223DDE4F 00000001` | an active repel never runs out (use one repel once) |
-| Walk Through Walls *(vanilla)* | see below | press **R+B** to enable, **L+B** to disable |
+| 100% Catch Rate | `223D8605 00000001` | any ball always catches |
+| Always Run (wild) | `223D8606 00000001` | running from wild battles always works — traps, Mean Look, Arena Trap, speed all bypassed |
+| Shiny Wild Encounters (v3.3+) | `223D860D 00000001` | every wild encounter is shiny; combines with the Encounter Tuner |
+| Flee Trainer Battles (v3.3+) | `223D860C 00000001` | **hold L+R while confirming your move**; when the turn starts, the real escape sequence runs ("Got away safely!") |
 
-Walk Through Walls (classic HGSS US code, verified against this build):
+**Flee Trainer Battles, reworked in v3.3:** the earlier version forced the
+battle outcome from any frame, which could yank the battle engine out of an
+animation mid-flight and crash. It now waits for the turn-start state (all
+menus closed — the same state a genuine wild flee runs from) and executes the
+engine's own escape script. The trainer is not marked defeated and will
+re-engage on sight. Still the most experimental cheat: save first.
+
+## Overworld
+
+| Name | Code | Effect |
+|---|---|---|
+| Infinite Repel | `223D8607 00000001` | an active repel never runs out (use one repel once) |
+| Walk Through Walls *(vanilla)* | see below | **R+B** on, **L+B** off |
 
 ```
 94000130 FCFD0200
@@ -83,36 +84,39 @@ D2000000 00000000
 D2000000 00000000
 ```
 
-Do **not** save while standing somewhere unreachable, and disable it (L+B)
-before saving.
+Don't save while standing somewhere unreachable; switch it off (L+B) before
+saving.
 
-### Reset
+## Reset
 
 | Name | Code | Effect |
 |---|---|---|
-| All Native Cheats OFF | `023DDE4C 00000000` + `223DDE54 00000000` (one code, two lines) | zeroes XP/catch/run/repel/flee-trainer at once |
+| All Native Cheats OFF | `023D8604 00000000` + `023D860C 00000000` (one code, two lines) | zeroes XP/catch/run/repel + flee/shiny/uncap at once |
 
-### Event unlocks
+## Event unlocks
 
-Not needed: HeartGold Generations doesn't gate content behind distribution
-events (no GS Ball / Azure Flute style scripts exist in the hack), and the
-National Dex is enabled from the start. Every added species is obtainable in
-the wild — and with the Encounter Tuner you can summon any of them directly.
+Not needed: the hack has no distribution-event gating (no GS Ball / Azure
+Flute scripts exist), and the National Dex is on from the start. The Tuner can
+summon any species directly.
 
-## Cheat block internals (for the curious)
+## Cheat block internals
 
-`gCheatConfig` lives at `0x023DDE48` (see `include/cheats.h`):
+`gCheatConfig` is pinned at `0x023D8600` (see `include/cheats.h`,
+`src/linker.ld`):
 
 | Address | Field |
 |---|---|
-| `0x023DDE48` | magic `HGV3` |
-| `0x023DDE4C` | XP multiplier (0/1 = off) |
-| `0x023DDE4D` | 100% catch |
-| `0x023DDE4E` | always run |
-| `0x023DDE4F` | infinite repel |
-| `0x023DDE50` | tuner species (u16) |
-| `0x023DDE52` | tuner level |
-| `0x023DDE53` | tuner gender |
+| `0x023D8600` | magic `HGV3` (u32) |
+| `0x023D8604` | XP multiplier (0/1 = off) |
+| `0x023D8605` | 100% catch |
+| `0x023D8606` | always run (wild) |
+| `0x023D8607` | infinite repel |
+| `0x023D8608` | tuner species (u16) |
+| `0x023D860A` | tuner level |
+| `0x023D860B` | tuner gender |
+| `0x023D860C` | flee trainer battles |
+| `0x023D860D` | shiny wild encounters |
+| `0x023D860E` | ignore level cap |
 
-The Encounter Tuner writes the last three itself; you can also poke them with
-AR codes if you ever want a code-only encounter override.
+The Encounter Tuner writes its own three fields in-game; everything is also
+pokeable via AR codes.
