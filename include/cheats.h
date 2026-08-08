@@ -27,6 +27,13 @@ typedef struct CheatConfig
 
 #define CHEAT_MAGIC 0x33564748  // 'HGV3'
 
-extern CheatConfig gCheatConfig;
+// The block is pinned by src/linker.ld to the very start of overlay 129
+// (0x023D8600).  Access goes through this absolute address on purpose: the
+// storage symbol lands inside the .text output section, where the linker
+// symbol generator would tag it with the ARM thumb bit (+1) and silently
+// misalign every cross-overlay access.  volatile because Action Replay codes
+// write these bytes from outside the program.
+#define CHEAT_CONFIG_ADDR 0x023D8600
+#define gCheatConfig (*(volatile CheatConfig *)CHEAT_CONFIG_ADDR)
 
 #endif // CHEATS_H

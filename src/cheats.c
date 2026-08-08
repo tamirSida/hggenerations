@@ -2,12 +2,13 @@
 #include "../include/cheats.h"
 
 /**
- *  Cheat configuration block -- see include/cheats.h.
+ *  Cheat configuration block storage -- see include/cheats.h.
  *  Pinned into the dedicated .cheatcfg section, which src/linker.ld places
- *  first in the always-resident arm9 extension: gCheatConfig sits at exactly
- *  0x023D8600 in every build, so Action Replay codes never go stale.
+ *  first in the always-resident arm9 extension: this storage sits at exactly
+ *  0x023D8600 (= CHEAT_CONFIG_ADDR) in every build.  All code accesses it
+ *  through the gCheatConfig absolute-address macro, never this symbol.
  */
-CheatConfig __attribute__((section(".cheatcfg"))) ALIGN4 gCheatConfig =
+CheatConfig __attribute__((section(".cheatcfg"))) ALIGN4 gCheatConfigStorage =
 {
     .magic = CHEAT_MAGIC,
     .expMult = 0,
