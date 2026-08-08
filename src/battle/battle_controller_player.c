@@ -5,37 +5,52 @@
 #include "../../include/constants/battle_script_constants.h"
 #include "../../include/constants/file.h"
 
+static u8 sFleeArmed = 0;
+
 /**
- *  @brief cheat: while gCheatConfig.fleeTrainer is set, holding L+R when a
- *         trainer-battle turn starts runs the genuine escape sub-sequence
- *         (SUB_SEQ_ESCAPE) -- the exact script a successful wild flee runs,
- *         from the same quiescent state (every selection menu already closed).
- *         The vanilla block only exists in the selection UI, which this
- *         bypasses entirely.
+ *  @brief cheat: while gCheatConfig.fleeTrainer is set, pressing L+R at any
+ *         point during a trainer battle arms an escape, which then fires at
+ *         the next turn start (all menus closed) by running the genuine
+ *         escape sub-sequence (SUB_SEQ_ESCAPE) -- the exact script a
+ *         successful wild flee runs, from the same quiescent state.  The
+ *         vanilla "can't run" block only exists in the selection UI, which
+ *         this bypasses entirely.
  */
 static void overrideTrainerEscape(struct BattleSystem *bsys, struct BattleStruct *ctx)
 {
     u32 fight_type;
 
+    // battle (re)starting or already ending: disarm so a latch never leaks
+    // into the next battle
+    if (ctx->server_seq_no <= CONTROLLER_COMMAND_START_ENCOUNTER ||
+        BattleSystem_GetBattleOutcomeFlags(bsys))
+    {
+        sFleeArmed = 0;
+        return;
+    }
+
     if (!gCheatConfig.fleeTrainer)
+    {
+        sFleeArmed = 0;
         return;
-
-    if (ctx->server_seq_no != CONTROLLER_COMMAND_CALC_EXECUTION_ORDER)
-        return;
-
-    if ((PAD_Read() & (PAD_BUTTON_L | PAD_BUTTON_R)) != (PAD_BUTTON_L | PAD_BUTTON_R))
-        return;
+    }
 
     fight_type = BattleTypeGet(bsys);
     if (!(fight_type & BATTLE_TYPE_TRAINER) || (fight_type & BATTLE_TYPE_WIRELESS))
         return;
 
-    if (BattleSystem_GetBattleOutcomeFlags(bsys))
-        return;
+    if ((PAD_Read() & (PAD_BUTTON_L | PAD_BUTTON_R)) == (PAD_BUTTON_L | PAD_BUTTON_R))
+    {
+        sFleeArmed = 1;
+    }
 
-    LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_ESCAPE);
-    ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;
-    ctx->next_server_seq_no = CONTROLLER_COMMAND_44;
+    if (sFleeArmed && ctx->server_seq_no == CONTROLLER_COMMAND_CALC_EXECUTION_ORDER)
+    {
+        sFleeArmed = 0;
+        LoadBattleSubSeqScript(ctx, ARC_BATTLE_SUB_SEQ, SUB_SEQ_ESCAPE);
+        ctx->server_seq_no = CONTROLLER_COMMAND_RUN_SCRIPT;
+        ctx->next_server_seq_no = CONTROLLER_COMMAND_44;
+    }
 }
 
 #if defined (DISABLE_ITEMS_IN_TRAINER_BATTLE)

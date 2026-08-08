@@ -1,7 +1,7 @@
-# HeartGold Generations v3.3 — Cheat Guide (Delta / melonDS)
+# HeartGold Generations v3.4 — Cheat Guide (Delta / melonDS)
 
-Current build: `HeartGold-Generations-v3.3-cheats.nds`,
-SHA-256 `214491b0...f96399`.
+Current build: `HeartGold-Generations-v3.4-cheats.nds`
+(SHA-256 starts `44bc5876`). Addresses are pinned — codes are identical for v3.3/v3.4.
 
 > **v3.3 changed every cheat address — once.** The cheat block is now pinned to
 > a dedicated spot at the start of the engine's code region (`0x023D8600`), so
@@ -59,7 +59,7 @@ mon approaches the cap. Enable **Ignore Level Cap** to lift the ceiling to 100
 | 100% Catch Rate | `223D8605 00000001` | any ball always catches |
 | Always Run (wild) | `223D8606 00000001` | running from wild battles always works — traps, Mean Look, Arena Trap, speed all bypassed |
 | Shiny Wild Encounters (v3.3+) | `223D860D 00000001` | every wild encounter is shiny; combines with the Encounter Tuner |
-| Flee Trainer Battles (v3.3+) | `223D860C 00000001` | **hold L+R while confirming your move**; when the turn starts, the real escape sequence runs ("Got away safely!") |
+| Flee Trainer Battles (v3.4+) | `223D860C 00000001` | **press L+R at any point during the battle**; the escape fires at the next turn start ("Got away safely!") |
 
 **Flee Trainer Battles, reworked in v3.3:** the earlier version forced the
 battle outcome from any frame, which could yank the battle engine out of an
