@@ -16,6 +16,7 @@
 #include "../../include/constants/species.h"
 #include "../../include/constants/weather_numbers.h"
 #include "../../include/map_events_internal.h"
+#include "../../include/cheats.h"
 
 /**
  *  @brief script command to give an egg adapted to set the hidden ability
@@ -372,10 +373,24 @@ void SetOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req, u16 trg)
  */
 void CheckOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req, FieldSystem *fsys)
 {
+    static u8 sMegaStonesGiven = 0; // once per session, so a still-ticked AR code can't re-fire the script
+
     if (req->OpenPCCheck) {
         SetScriptFlag(0x18F); // some random flag that should be set by script 2010 (file 3 script 10)
         EventSet_Script(fsys, 2010, NULL); // set up script 2010
     } else if (req->OpenTunerCheck) {
         EventSet_Script(fsys, 2073, NULL); // encounter tuner input flow (file 3 script 73)
+    } else if (gCheatConfig.giveMegaStones && !sMegaStonesGiven) {
+        sMegaStonesGiven = 1;
+        gCheatConfig.giveMegaStones = 0;
+
+        BAG_DATA *bag = Sav2_Bag_get(fsys->savedata);
+        for (u16 item = ITEM_MEGA_STONES_START; item <= ITEM_DIANCITE; item++) {
+            if (!Bag_HasItem(bag, item, 1, 11)) {
+                Bag_AddItem(bag, item, 1, 11);
+            }
+        }
+        SetScriptFlag(FLAG_MEGA_EVOLUTION_ENABLED);
+        EventSet_Script(fsys, 2074, NULL); // confirmation message (file 3 script 74)
     }
 }

@@ -21,4 +21,5 @@ CheatConfig __attribute__((section(".cheatcfg"))) ALIGN4 gCheatConfigStorage =
     .fleeTrainer = 0,
     .shinyWild = 0,
     .uncapLevel = 0,
+    .giveMegaStones = 0,
 };

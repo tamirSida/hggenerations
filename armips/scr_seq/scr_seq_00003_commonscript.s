@@ -88,6 +88,7 @@ scrdef scr_seq_0003_070
 scrdef scr_seq_0003_071
 scrdef scr_seq_0003_072_repels
 scrdef scr_seq_0003_073_tuner
+scrdef scr_seq_0003_074_megastones
 scrdef_end
 
 scr_seq_0003_002:
@@ -1793,6 +1794,18 @@ _tunerOff:
     end
 
 _tunerAbort:
+    releaseall
+    end
+
+
+// Mega Stone kit confirmation (triggered from CheckOverworldRequestFlags
+// when the giveMegaStones cheat byte is set)
+scr_seq_0003_074_megastones:
+    play_se SEQ_SE_DP_SELECT
+    lockall
+    npc_msg 125
+    wait_button
+    closemsg
     releaseall
     end
 

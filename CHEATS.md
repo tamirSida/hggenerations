@@ -1,7 +1,7 @@
-# HeartGold Generations v3.5 — Cheat Guide (Delta / melonDS)
+# HeartGold Generations v3.6 — Cheat Guide (Delta / melonDS)
 
-Current build: `HeartGold-Generations-v3.5-cheats.nds`
-(SHA-256 starts `44bc5876`). Addresses are pinned — codes are identical for v3.3/v3.5.
+Current build: `HeartGold-Generations-v3.6-cheats.nds`
+(SHA-256 starts `44bc5876`). Addresses are pinned — codes are identical for v3.3/v3.6.
 
 > **v3.3 changed every cheat address — once.** The cheat block is now pinned to
 > a dedicated spot at the start of the engine's code region (`0x023D8600`), so
@@ -59,7 +59,7 @@ mon approaches the cap. Enable **Ignore Level Cap** to lift the ceiling to 100
 | 100% Catch Rate | `223D8605 00000001` | any ball always catches |
 | Always Run (wild) | `223D8606 00000001` | running from wild battles always works — traps, Mean Look, Arena Trap, speed all bypassed |
 | Shiny Wild Encounters (v3.3+) | `223D860D 00000001` | every wild encounter is shiny; combines with the Encounter Tuner |
-| Flee Trainer Battles (v3.5+) | `223D860C 00000001` | **press L+R at any point during the battle**; the escape fires at the next turn start ("Got away safely!") |
+| Flee Trainer Battles (v3.6+) | `223D860C 00000001` | **press L+R at any point during the battle**; the escape fires at the next turn start ("Got away safely!") |
 
 **Flee Trainer Battles, reworked in v3.3:** the earlier version forced the
 battle outcome from any frame, which could yank the battle engine out of an
@@ -73,6 +73,7 @@ re-engage on sight. Still the most experimental cheat: save first.
 | Name | Code | Effect |
 |---|---|---|
 | Infinite Repel | `223D8607 00000001` | an active repel never runs out (use one repel once) |
+| Mega Stone Kit (v3.6+) | `223D860F 00000001` | one-shot: adds all 47 Mega Stones to the bag and enables Mega Evolution; a message confirms, then untick. Once per game session |
 | Walk Through Walls *(vanilla)* | see below | **R+B** on, **L+B** off |
 
 ```
@@ -117,6 +118,7 @@ summon any species directly.
 | `0x023D860C` | flee trainer battles |
 | `0x023D860D` | shiny wild encounters |
 | `0x023D860E` | ignore level cap |
+| `0x023D860F` | mega stone kit (one-shot) |
 
 The Encounter Tuner writes its own three fields in-game; everything is also
 pokeable via AR codes.
