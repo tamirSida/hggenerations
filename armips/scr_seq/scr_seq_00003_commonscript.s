@@ -1819,6 +1819,8 @@ scr_seq_0003_075_skypillar:
     fade_screen 6, 1, 0, RGB_BLACK
     wait_fade
     warp 538, 0, 15, 25, 1
+    fade_screen 6, 1, 1, RGB_BLACK
+    wait_fade
     releaseall
     end
 
