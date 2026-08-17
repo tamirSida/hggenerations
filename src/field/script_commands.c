@@ -375,6 +375,34 @@ void CheckOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req, FieldSystem *fsys)
 {
     static u8 sMegaStonesGiven = 0; // once per session, so a still-ticked AR code can't re-fire the script
 
+    // Weather-trio origin normalizer: Oak's Jade Orb check (vanilla scrcmd,
+    // see pret ScrCmd_CheckKyogreGroudonInParty) demands Kyogre with origin
+    // game 7 (HG) and Groudon with origin game 8 (SS) -- the vanilla "trade
+    // Groudon from SoulSilver" design.  Any Groudon caught inside this ROM
+    // carries origin 7 and can never trigger Oak.  Normalize party copies to
+    // look like local Embedded Tower catches of the right origin game.
+    {
+        struct Party *party = SaveData_GetPlayerPartyPtr(fsys->savedata);
+        for (int i = 0; i < 6; i++) {
+            struct PartyPokemon *mon = Party_GetMonByIndex(party, i);
+            if (mon == NULL)
+                continue;
+            u32 sp = GetMonData(mon, MON_DATA_SPECIES, NULL);
+            if ((sp == SPECIES_GROUDON || sp == SPECIES_KYOGRE || sp == SPECIES_RAYQUAZA)
+                && !GetMonData(mon, MON_DATA_IS_EGG, NULL)) {
+                u32 wantVer = (sp == SPECIES_GROUDON) ? 8 : 7; // 8 = SoulSilver, 7 = HeartGold
+                u16 mapsec = 232;                              // MAPSEC_EMBEDDED_TOWER
+                if (GetMonData(mon, MON_DATA_GAME_VERSION, NULL) != wantVer) {
+                    SetMonData(mon, MON_DATA_GAME_VERSION, (u8 *)&wantVer);
+                }
+                if (GetMonData(mon, MON_DATA_HGSS_MET_LOCATION, NULL) != mapsec) {
+                    SetMonData(mon, MON_DATA_HGSS_MET_LOCATION, (u8 *)&mapsec);
+                    SetMonData(mon, MON_DATA_MET_LOCATION, (u8 *)&mapsec);
+                }
+            }
+        }
+    }
+
     if (req->OpenPCCheck) {
         SetScriptFlag(0x18F); // some random flag that should be set by script 2010 (file 3 script 10)
         EventSet_Script(fsys, 2010, NULL); // set up script 2010
