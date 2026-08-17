@@ -388,6 +388,15 @@ void CheckOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req, FieldSystem *fsys)
             if (mon == NULL)
                 continue;
             u32 sp = GetMonData(mon, MON_DATA_SPECIES, NULL);
+            // Arceus: the Sinjoh Ruins event (Ruins of Alph -> Dialga/Palkia/
+            // Giratina creation) requires the fateful-encounter bit that only
+            // distribution Arceus carried (see pret MonMetadataMatchesEvent,
+            // EVENT_ARCEUS_MOVIE_GIFT).  Grant it to any party Arceus.
+            if (sp == SPECIES_ARCEUS && !GetMonData(mon, MON_DATA_IS_EGG, NULL)
+                && !GetMonData(mon, MON_DATA_FATEFUL_ENCOUNTER, NULL)) {
+                u32 fateful = 1;
+                SetMonData(mon, MON_DATA_FATEFUL_ENCOUNTER, (u8 *)&fateful);
+            }
             if ((sp == SPECIES_GROUDON || sp == SPECIES_KYOGRE || sp == SPECIES_RAYQUAZA)
                 && !GetMonData(mon, MON_DATA_IS_EGG, NULL)) {
                 u32 wantVer = (sp == SPECIES_GROUDON) ? 8 : 7; // 8 = SoulSilver, 7 = HeartGold
