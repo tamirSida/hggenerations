@@ -22,4 +22,5 @@ CheatConfig __attribute__((section(".cheatcfg"))) ALIGN4 gCheatConfigStorage =
     .shinyWild = 0,
     .uncapLevel = 0,
     .giveMegaStones = 0,
+    .warpSkyPillar = 0,
 };

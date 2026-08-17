@@ -1,7 +1,7 @@
-# HeartGold Generations v3.8 — Cheat Guide (Delta / melonDS)
+# HeartGold Generations v3.9 — Cheat Guide (Delta / melonDS)
 
-Current build: `HeartGold-Generations-v3.8-cheats.nds`
-(SHA-256 starts `44bc5876`). Addresses are pinned — codes are identical for v3.3/v3.8.
+Current build: `HeartGold-Generations-v3.9-cheats.nds`
+(SHA-256 starts `44bc5876`). Addresses are pinned — codes are identical for v3.3/v3.9.
 
 > **v3.3 changed every cheat address — once.** The cheat block is now pinned to
 > a dedicated spot at the start of the engine's code region (`0x023D8600`), so
@@ -59,7 +59,7 @@ mon approaches the cap. Enable **Ignore Level Cap** to lift the ceiling to 100
 | 100% Catch Rate | `223D8605 00000001` | any ball always catches |
 | Always Run (wild) | `223D8606 00000001` | running from wild battles always works — traps, Mean Look, Arena Trap, speed all bypassed |
 | Shiny Wild Encounters (v3.3+) | `223D860D 00000001` | every wild encounter is shiny; combines with the Encounter Tuner |
-| Flee Trainer Battles (v3.8+) | `223D860C 00000001` | **press L+R at any point during the battle**; the escape fires at the next turn start ("Got away safely!") |
+| Flee Trainer Battles (v3.9+) | `223D860C 00000001` | **press L+R at any point during the battle**; the escape fires at the next turn start ("Got away safely!") |
 
 **Flee Trainer Battles, reworked in v3.3:** the earlier version forced the
 battle outcome from any frame, which could yank the battle engine out of an
@@ -73,7 +73,7 @@ re-engage on sight. Still the most experimental cheat: save first.
 | Name | Code | Effect |
 |---|---|---|
 | Infinite Repel | `223D8607 00000001` | an active repel never runs out (use one repel once) |
-| Mega Stone Kit (v3.8+) | `223D860F 00000001` | one-shot: adds all 47 Mega Stones to the bag and enables Mega Evolution; a message confirms, then untick. Once per game session |
+| Mega Stone Kit (v3.9+) | `223D860F 00000001` | one-shot: adds all 47 Mega Stones to the bag and enables Mega Evolution; a message confirms, then untick. Once per game session |
 | Walk Through Walls *(vanilla)* | see below | **R+B** on, **L+B** off |
 
 ```
@@ -94,22 +94,22 @@ saving.
 |---|---|---|
 | All Native Cheats OFF | `023D8604 00000000` + `023D860C 00000000` (one code, two lines) | zeroes XP/catch/run/repel + flee/shiny/uncap at once |
 
-## Weather trio / Jade Orb (automatic in v3.8+)
+## Weather trio / Jade Orb (automatic in v3.9+)
 
 Oak's Jade Orb event requires a Kyogre originating from HeartGold **and a
 Groudon originating from SoulSilver** (the vanilla trade-only design), so no
-Groudon caught in this ROM could ever qualify. v3.8 normalizes any Groudon,
+Groudon caught in this ROM could ever qualify. v3.9 normalizes any Groudon,
 Kyogre, or Rayquaza in your party automatically: origin game set to what Oak
 expects and met location set to Embedded Tower. No cheat code needed — put the
 mon in your party, take a step, and its summary/Oak both see an Embedded Tower
 catch.
 
-## Arceus / Sinjoh Ruins (automatic in v3.8+)
+## Arceus / Sinjoh Ruins (automatic in v3.9+)
 
 HGSS contains a hidden event: bring Arceus (walking first in your party) to
 the Ruins of Alph and a cutscene takes you to the Sinjoh Ruins, where Arceus
 creates a level 1 Dialga, Palkia, or Giratina for you. Vanilla locked it to
-the movie-distribution Arceus (fateful-encounter bit). v3.8 grants that bit to
+the movie-distribution Arceus (fateful-encounter bit). v3.9 grants that bit to
 any party Arceus automatically — catch one (Tuner: 493), put it first, walk
 into the Ruins of Alph.
 
@@ -138,6 +138,7 @@ summon any species directly.
 | `0x023D860D` | shiny wild encounters |
 | `0x023D860E` | ignore level cap |
 | `0x023D860F` | mega stone kit (one-shot) |
+| `0x023D8610` | debug: warp to Sky Pillar (one-shot, v3.9+) |
 
 The Encounter Tuner writes its own three fields in-game; everything is also
 pokeable via AR codes.

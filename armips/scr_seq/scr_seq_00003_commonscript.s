@@ -89,6 +89,7 @@ scrdef scr_seq_0003_071
 scrdef scr_seq_0003_072_repels
 scrdef scr_seq_0003_073_tuner
 scrdef scr_seq_0003_074_megastones
+scrdef scr_seq_0003_075_skypillar
 scrdef_end
 
 scr_seq_0003_002:
@@ -1806,6 +1807,18 @@ scr_seq_0003_074_megastones:
     npc_msg 125
     wait_button
     closemsg
+    releaseall
+    end
+
+
+// Debug warp into the Sky Pillar map under construction (header 538).
+// Spawn tile (15,25) = the donor floor's old stair-warp tile, guaranteed walkable.
+scr_seq_0003_075_skypillar:
+    play_se SEQ_SE_DP_SELECT
+    lockall
+    fade_screen 6, 1, 0, RGB_BLACK
+    wait_fade
+    warp 538, 0, 15, 25, 1
     releaseall
     end
 

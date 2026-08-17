@@ -417,6 +417,9 @@ void CheckOverworldRequestFlags(OVERWORLD_REQUEST_FLAGS *req, FieldSystem *fsys)
         EventSet_Script(fsys, 2010, NULL); // set up script 2010
     } else if (req->OpenTunerCheck) {
         EventSet_Script(fsys, 2073, NULL); // encounter tuner input flow (file 3 script 73)
+    } else if (gCheatConfig.warpSkyPillar) {
+        gCheatConfig.warpSkyPillar = 0;
+        EventSet_Script(fsys, 2075, NULL); // debug warp to Sky Pillar (file 3 script 75)
     } else if (gCheatConfig.giveMegaStones && !sMegaStonesGiven) {
         sMegaStonesGiven = 1;
         gCheatConfig.giveMegaStones = 0;
